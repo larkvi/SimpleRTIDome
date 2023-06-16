@@ -5,24 +5,20 @@ import gphoto2 as gp
 import os
 import subprocess
 
-pixels1 = neopixel.NeoPixel(board.D18, 50, brightness=1)
+pixels1 = neopixel.NeoPixel(board.D18, 50, brightness=1) #there are only four acceptable pins for the data. I am using 18.
 
 base_path = '/home/CameraZero/Pictures/RTI'
-batchNumber = 1
+batchNumber = 1 #make this increment automatically based upon the current highest-numbered batch -- perhaps the user passes a name (presumably of the object), and then each subsequent call with that name increments?
 
-def blinkAndClearPixels():
-    pixels1[0] = (255,0,0)
-    pixels1[1] = (0,255,0)
-    pixels1[2] = (0,0,255)
-    time.sleep(0.5)
-    pixels1.fill((0,0,0))
+def clearPixels():
+    pixels1.fill((0,0,0)) #is there a better way to turn the neopixels off?
     return
     
 def makeBatchFolder(base_path,batchNumber):
     target_folder = os.path.join(base_path,'batch_'+str(batchNumber).zfill(3))
-    print("Target folder: %s" % target_folder)
+    print("Target folder: " + target_folder)
     try:
-        os.makedirs(target_folder)
+        os.makedirs(target_folder) #makedirs is the plural(recursive) of mkdir for some reason.
     except OSError as error:
         print(error)
     return 
@@ -40,21 +36,21 @@ def take_the_photo(batchNumber,lightNumber):
     camera_file = camera.file_get(
         file_path.folder, file_path.name, gp.GP_FILE_TYPE_NORMAL)
     camera_file.save(target)
-#    subprocess.call(['xdg-open', target])
-#    camera.exit()
+#    subprocess.call(['xdg-open', target]) #this was in the gphoto2 example, but was causing the script to hang after the image opened.
+#    camera.exit() #apparently un-needed
     return
 
-def lightAndShoot(batchNumber,lightNumber):
-    blinkAndClearPixels()
+def lightAndShoot(batchNumber,lightNumber): 
+    clearPixels()
     pixels1[lightNumber] = (255,255,255)
     take_the_photo(target_folder,batchNumber,lightNumber)
-    blinkAndClearPixels()
+    clearPixels()
     return
 
-def batchLightAndShoot(base_path,batchNumber):
+def batchLightAndShoot(base_path,batchNumber): #figure out how to ensure the camera is awake // can gphoto2 wake the camera?
     target_folder = makeBatchFolder(base_path,batchNumber)
-    for lightNumber in range (48,49):
-        print('Batch: '+batchNumber+'. Image: '+str(lightNumber+1)+' .')
+    for lightNumber in range (0,39):
+        print('Batch: '+batchNumber+'. Image: '+str(lightNumber)+' .')
         lightAndShoot(target_folder,batchNumber,lightNumber)
 
 batchLightAndShoot(base_path,batchNumber)
