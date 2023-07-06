@@ -8,7 +8,7 @@ import subprocess
 pixels1 = neopixel.NeoPixel(board.D18, 41, brightness=1) #there are only four acceptable pins for the data. I am using 18.
 
 base_path = '/home/CameraZero/Pictures/RTI'
-batchNumber = 7  #make this increment automatically based upon the current highest-numbered batch -- perhaps the user passes a name (presumably of the object), and then each subsequent call with that name increments?
+batchNumber = 8  #make this increment automatically based upon the current highest-numbered batch -- perhaps the user passes a name (presumably of the object), and then each subsequent call with that name increments?
 
 def clearPixels():
     pixels1.fill((0,0,0)) #is there a better way to turn the neopixels off?
@@ -31,8 +31,7 @@ def take_the_photo(target_folder,batchNumber,lightNumber):
     print('Camera filepath: {0}/{1}'.format(file_path.folder, file_path.name))
 #    print("Directory %s created." % target_folder)
 #    target = os.path.join(target_folder,str(batchNumber).zfill(3)+'_'+str(lightNumber).zfill(2)+'_'+file_path.name)
-    target = os.path.join('/home/CameraZero/Pictures/RTI/batch_007',str(batchNumber).zfill(3)+'_'+str(lightNumber).zfill(2)+'_'+file_path.name)
-#    target = os.path.join('/tmp','Batch'+str(batchNumber).zfill(3),str(batchNumber)+'_'+str(lightNumber)+file_path.name)
+    target = os.path.join(base_path,'batch_'+str(batchNumber).zfill(3),str(batchNumber).zfill(3)+'_'+str(lightNumber).zfill(2)+'_'+file_path.name)
     print('Copying image to', target)
     camera_file = camera.file_get(
         file_path.folder, file_path.name, gp.GP_FILE_TYPE_NORMAL)
