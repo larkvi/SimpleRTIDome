@@ -8,7 +8,7 @@ import subprocess
 pixels1 = neopixel.NeoPixel(board.D18, 41, brightness=1) #there are only four acceptable pins for the data. I am using 18.
 
 base_path = '/home/CameraZero/Pictures/RTI'
-batchNumber = 8  #make this increment automatically based upon the current highest-numbered batch -- perhaps the user passes a name (presumably of the object), and then each subsequent call with that name increments?
+batchNumber = 9  #make this increment automatically based upon the current highest-numbered batch -- perhaps the user passes a name (presumably of the object), and then each subsequent call with that name increments?
 
 def clearPixels():
     pixels1.fill((0,0,0)) #is there a better way to turn the neopixels off?
