@@ -12,15 +12,15 @@ import argparse
 
 pixels1 = neopixel.NeoPixel(board.D18, 41, brightness=1) #there are only four acceptable pins for the data. I am using 18.
 base_path = '/home/CameraZero/Pictures/RTI'
-batchNumber = 10  #make this increment automatically based upon the current highest-numbered batch -- perhaps the user passes a name (presumably of the object), and then each subsequent call with that name increments?
+batchNumber = 17  #make this increment automatically based upon the current highest-numbered batch -- perhaps the user passes a name (presumably of the object), and then each subsequent call with that name increments?
 
 picam2 = Picamera2()
-preview_config = picam2.create_preview_configuration()
-capture_config = picam2.create_still_configuration()
-picam2.set_controls({"AfMode": controls.AfModeEnum.Manual, "LensPosition": 9.3})
-picam2.set_controls({"ExposureTime": 10000, "AnalogueGain": 1.0})
-picam2.configure(preview_config)
-picam2.start()
+picam2.configure("capture")
+picam2.controls.ExposureTime = 100000
+picam2.controls.AnalogueGain = 1.0
+picam2.controls.AfMode = controls.AfModeEnum.Manual
+picam2.controls.LensPosition = 9.25
+picam2.controls.AwbMode = controls.AwbModeEnum.Daylight
 
 
 def clearPixels():
@@ -38,15 +38,17 @@ def makeBatchFolder(base_path,batchNumber):
         
 def take_the_photo(target_folder,batchNumber,lightNumber):
     target = os.path.join(base_path,'batch_'+str(batchNumber).zfill(3),str(batchNumber).zfill(3)+'_'+str(lightNumber).zfill(2)+'_'+"rti.jpg")
-    picam2.switch_mode_and_capture_file(capture_config, target)
-    print('Copying image to', target)
+    picam2.capture_file(target)
+    print('Writing image to', target)
     return
 
-def lightAndShoot(target_folder,batchNumber,lightNumber): 
+def lightAndShoot(target_folder,batchNumber,lightNumber):
+    picam2.start()
     clearPixels()
     pixels1[lightNumber] = (255,255,255)
     take_the_photo(target_folder,batchNumber,lightNumber)
     clearPixels()
+    picam2.stop()
     return
 
 def batchLightAndShoot(base_path,batchNumber): #figure out how to ensure the camera is awake // can gphoto2 wake the camera?
