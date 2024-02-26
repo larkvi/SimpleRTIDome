@@ -17,10 +17,8 @@ batchNumber = 10  #make this increment automatically based upon the current high
 picam2 = Picamera2()
 preview_config = picam2.create_preview_configuration()
 capture_config = picam2.create_still_configuration()
-picam2.set_controls.AfMode = controls.AfModeEnum.Manual
-picam2.set_controls.LensPosition = 9.3
-picam2.set_controls.ExposureTime = 10000
-picam2.set_controls.AnalogueGain = 1.0
+picam2.set_controls({"AfMode": controls.AfModeEnum.Manual, "LensPosition": 9.3})
+picam2.set_controls({"ExposureTime": 10000, "AnalogueGain": 1.0})
 picam2.configure(preview_config)
 picam2.start()
 
