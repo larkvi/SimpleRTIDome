@@ -8,21 +8,26 @@ import subprocess
 import sys
 import argparse
 
-#import the args here: height of object in mm; exposure compensation if needed; anything else?
 
-pixels1 = neopixel.NeoPixel(board.D18, 41, brightness=1) #there are only four acceptable pins for the data. I am using 18.
+
+#import the args here: height of object in mm; exposure compensation if needed; anything else?
+#temp: set the user-config values here
 base_path = '/home/CameraZero/Pictures/RTI'
-batchNumber = 17  #make this increment automatically based upon the current highest-numbered batch -- perhaps the user passes a name (presumably of the object), and then each subsequent call with that name increments?
+batchNumber = 18  #make this increment automatically based upon the current highest-numbered batch -- perhaps the user passes a name (presumably of the object), and then each subsequent call with that name increments?
+object_height = 1.95 #height of photographed object in mm
+
+#values below here configure the camera
+pixels1 = neopixel.NeoPixel(board.D18, 41, brightness=1) #there are only four acceptable pins for the data. I am using 18.
 
 picam2 = Picamera2()
 picam2.configure("capture")
 picam2.controls.ExposureTime = 100000
 picam2.controls.AnalogueGain = 1.0
 picam2.controls.AfMode = controls.AfModeEnum.Manual
-picam2.controls.LensPosition = 9.25
+picam2.controls.LensPosition = 1000/(110-object_height)
 picam2.controls.AwbMode = controls.AwbModeEnum.Daylight
 
-
+#begin the actual code
 def clearPixels():
     pixels1.fill((0,0,0)) #is there a better way to turn the neopixels off?
     return
