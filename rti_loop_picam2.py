@@ -2,6 +2,7 @@ import time
 import board
 import neopixel
 from picamera2 import Picamera2
+from libcamera import controls
 import os
 import subprocess
 import sys
