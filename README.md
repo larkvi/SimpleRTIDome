@@ -6,7 +6,7 @@ A GitHub supporting and documenting a simple—and inexpensive—DIY camera-agno
 
 There are three scripts currently included in the repository. Due to a fundamental issue with the Neopixels library, they currently must be run with `sudo`, which is less than desirable for many reasons, not the least because the files written will be owned by root. Until a workaround is developed, it is necessary to use the `chgrp -R` and `chown -R` commands on the parent folder of the resulting files after each use, in order to facilitate copying and use by non-root processes.
 
-`prelight.py` is mainly used for variants of the dome that do not have the integrated Raspberry Pi Camera Module 3 in them, where a DSLR is being used instead. It allows the lighting of a few pixels for the purpose of focus and exposure.
+`prelight.py` is mainly used for variants of the dome that do not have the integrated Raspberry Pi Camera Module 3 in them, where a DSLR is being used instead. It allows the lighting of a few pixels for the purpose of focus and exposure. Note that due to the power draw, only a few LEDs should be lit at oncewhile the power is being provided by the Raspberry Pi board (if using an external power source, be sure to make the correct circuit between the board and the string of lights to avoid providing too much power to the board).
 
 `rti_loop_gphoto2.py` is used when connecting the dome to a USB camera, such as a DSLR.
 
